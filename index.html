@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tracking</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body class="bg-gray-50 dark:bg-gray-700 dark:text-white">
+        <div class="p-6">
+            <h1 class="pb-3 text-3xl text-center font-bold uppercase">
+                Tracking
+            </h1>
+    
+            <h2 class="text-xl text-center font-bold">
+                15 minutes break
+            </h2>
+        </div>
+
+        <div class="px-6 relative overflow-x-auto">
+            <table class="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Utente
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Postazione
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Tempo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="display"></tbody>
+            </table>
+        </div>
+
+        <div class="fixed hidden top-0 w-screen h-screen bg-gray-800 bg-opacity-50 text-center" id="registerPopup">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <form action="#" id="nicknameForm">
+                    <h1 class="text-white text-lg font-bold mb-3">Inserisci un nickname</h1>
+                    <input type="text" name="nickname" class="px-2 py-1 bg-gray-600 text-white block rounded-lg" placeholder="Nickname">
+                    <button type="submit" class="mt-4 px-4 py-2 bg-gray-600 rounded-lg uppercase">Conferma</button>
+                </form>
+            </div>
+        </div>
+
+        <script src="./js/app.js"></script>
+    </body>
+</html>
