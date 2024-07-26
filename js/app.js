@@ -7,13 +7,14 @@ _app.startUp = () => {
     _app.registerPopup = document.querySelector("#registerPopup");
     _app.nicknameForm = document.querySelector("#nicknameForm");
 
-    _app.nicknameForm.addEventListener("submit", _app.nicknameForm_submitHandler);
+    _app.nicknameForm?.addEventListener("submit", _app.nicknameForm_submitHandler);
     _app.setupWebSocket();
 }
 
 _app.setupWebSocket = () => {
     _app.wsClient = new WebSocket(_app.wssUrl);
     _app.wsClient.addEventListener("message", _app.wsClient_messageHandler);
+    _app.wsClient.addEventListener("error", (err) => console.error(err));
 }
 
 _app.wsClient_messageHandler = (event) => {
@@ -57,31 +58,43 @@ _app.updateDisplay = () => {
         }
     }
 
-    _app.display.innerHTML = htmlOut;
+    if (_app.display) {
+        _app.display.innerHTML = htmlOut;
+    }
+}
+
+_app.registerUser = (name) => {
+    const json = JSON.stringify({
+        type: "registration-response",
+        userId: _app.regUser,
+        name
+    });
+
+    try {
+        _app.wsClient.send(json);
+        _app.nicknameForm?.reset();
+        _app.showAlert("success", "Registrazione eseguita");
+        console.log(_app.regUser, `Registered as ${name}`);
+    }
+    catch (err) {
+        console.error(err);
+        _app.showAlert("error", "Errore durante la registrazione");
+    }
 }
 
 _app.showRegisterPopup = (show) => {
-    _app.registerPopup.classList.toggle("hidden", !show);
+    _app.registerPopup?.classList.toggle("hidden", !show);
 
-    if (show) {
-        _app.nicknameForm.nickname.focus();
+    if (show && _app.nicknameForm) {
+        _app.nicknameForm["nickname"]?.focus();
     }
 }
 
 _app.nicknameForm_submitHandler = (event) => {
-    const nickname = _app.nicknameForm.nickname.value;
+    const nickname = _app.nicknameForm["nickname"]?.value;
 
     if (nickname && nickname.trim() !== "") {
-        const data = {
-            type: "registration-response",
-            userId: _app.regUser,
-            name: nickname,
-        };
-
-        console.log(_app.regUser, `Registered as ${nickname}`);
-        _app.wsClient.send(JSON.stringify(data));
-        _app.nicknameForm.reset();
-        _app.showAlert("success", "Registrazione eseguita");
+        _app.registerUser(nickname);
     }
 
     event.preventDefault();
